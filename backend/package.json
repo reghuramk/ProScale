@@ -1,0 +1,64 @@
+{
+  "name": "js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm-run-all --parallel dev:*",
+    "debug": "npm run start",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "esbuild src/index.ts --bundle --platform=node --sourcemap --outdir=dist",
+    "start": "node --env-file=.env dist/index.js",
+    "dev:node": "node --watch dist/index.js",
+    "dev:tsc": "tsc --watch",
+    "dev:esbuild": "esbuild --watch src/index.ts --bundle --platform=node --sourcemap --outdir=dist",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint .",
+      "prettier --check",
+      "prettier 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --write"
+    ],
+    "*.{json,yml,yaml,md}": [
+      "prettier 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --write"
+    ]
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/node": "^22.13.9",
+    "@types/pg": "^8.15.4",
+    "esbuild": "^0.25.0",
+    "eslint": "^9.30.1",
+    "eslint-plugin-perfectionist": "^4.15.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.2",
+    "npm-run-all": "^4.1.5",
+    "prettier": "3.6.2",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.36.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-cloudwatch": "^3.879.0",
+    "@aws-sdk/client-ec2": "^3.880.0",
+    "@google-cloud/compute": "^6.2.0",
+    "@sendgrid/mail": "^8.1.5",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "google-auth-library": "^10.1.0",
+    "ioredis": "^5.6.1",
+    "jsonwebtoken": "^9.0.2",
+    "kafkajs": "^2.2.4",
+    "node-gyp-build": "^4.8.4",
+    "pg": "^8.16.3",
+    "zod": "^4.0.5"
+  }
+}

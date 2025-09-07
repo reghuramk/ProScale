@@ -1,0 +1,26 @@
+dist 
+node_modules
+.gitsecret/keys/random_seed
+!*.secret
+.env
+
+
+
+# ------------------------
+# Python
+# ------------------------
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+
+# Virtual environments
+venv/
+ENV/
+env/
+*.egg-info/
+.eggs/
+.python-version
