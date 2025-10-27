@@ -22,17 +22,21 @@ async function run() {
         console.error("Received message with null value");
         return;
       }
-      type EmailVerificationPayload = { email: string; token: string };
+      interface EmailVerificationPayload { email: string; token: string };
       const { email, token } = JSON.parse(
         message.value.toString(),
       ) as EmailVerificationPayload;
 
-      const verificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
+      const frontendUrl = process.env.FRONTEND_URL;
+      if (!frontendUrl) {
+        throw new Error("FRONTEND_URL environment variable is not set");
+      }
+      const verificationUrl = `${frontendUrl}/verify-email?token=${token}`;
       await sgMail.send({
-        to: email,
         from: "noreply@yourdomain.com",
-        subject: "Verify Your Email",
         html: `<p>Click <a href="${verificationUrl}">here</a> to verify your email</p>`,
+        subject: "Verify Your Email",
+        to: email,
       });
     },
   });

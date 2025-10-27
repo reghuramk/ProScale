@@ -7,7 +7,14 @@ export const Constants = {
   MALE: "male",
   MESSAGES: {
     ACCESS_TOKEN_SECRET_UNDEFINED: "ACCESS_TOKEN_SECRET is not defined",
+    ERROR_CREATING_USER: "Cannot create user",
+    ERROR_LISTING_INSTANCES: "Cannot fetch Instance List",
+    ERROR_STARTING_INSTANCE: "Cannot start the Instance",
+    ERROR_STOPPING_INSTANCE: "Cannot stop the Instance",
     GOOGLE_SIGN_IN_FAILED: "Google sign in failed",
+    INSTANCE_LIST_FETCHED: "Instances List fetched succesfully",
+    INSTANCE_STARTED: "The instance has been started succesully",
+    INSTANCE_STOPPED: "The instance has been stoped succesully",
     INTERNAL_SERVER_ERROR: "Internal Server Error",
     INVALID_GOOGLE_TOKEN: "Invalid Google token",
     INVALID_TOKEN: "Invalid Token",
@@ -30,6 +37,12 @@ export const Constants = {
     DASHBOARD: {
       BASE: "/api/dashboard",
       STATS: "/stats",
+    },
+    INFRA: {
+      BASE: "/infrastructure",
+      LIST_INSTANCES: "/infrastructure/instances",
+      START_INSTANCE: "/infrastructure/start/:instanceId",
+      STOP_INSTANCE: "/infrastructure/stop/:instanceId",
     },
   },
   TOKENS: {

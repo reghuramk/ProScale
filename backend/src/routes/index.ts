@@ -1,3 +1,4 @@
-import authRouter from "./auth.routes";
+import authRoutes from "./auth.routes";
+import infrastructureRoutes from "./infrastructure.routes";
 
-export { authRouter };
+export { authRoutes, infrastructureRoutes };

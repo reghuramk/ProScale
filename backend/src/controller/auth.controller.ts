@@ -47,6 +47,7 @@ export const register = async (
       message: MESSAGES.USER_INSERT_SUCCEEDED,
     });
   } catch (error) {
+    console.error(`${MESSAGES.ERROR_CREATING_USER}:`, error);
     next(error);
   }
 };

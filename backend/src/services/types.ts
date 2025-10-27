@@ -4,6 +4,17 @@ export interface GoogleSigninResponseType {
   name: string;
   picture: string;
 }
+export interface InstanceIdType {
+  instanceId: string
+}
+
+export interface InstanceInfoType {
+  id: string;
+  launchTime?: Date;
+  state?: string;
+  type?: string;
+}
+
 export interface RegisterResponseType {
   accessToken: string;
   refreshToken: string;
