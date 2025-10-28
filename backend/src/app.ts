@@ -1,5 +1,5 @@
 import cors from "cors";
-import express from "express";
+import express, { Request, Response } from "express";
 
 import { Middleware } from "./middleware";
 import { authRoutes, infrastructureRoutes } from "./routes";
@@ -13,6 +13,10 @@ app.use(cors());
 
 app.use(ROUTES.AUTH.BASE, authRoutes);
 app.use(ROUTES.INFRA.BASE, infrastructureRoutes);
+
+app.get("/home", (req: Request, res: Response) => {
+  res.send("Welcome home");
+});
 
 app.use(Middleware.notFoundHandler);
 app.use(Middleware.errorHandler);

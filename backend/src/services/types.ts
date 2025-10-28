@@ -5,7 +5,7 @@ export interface GoogleSigninResponseType {
   picture: string;
 }
 export interface InstanceIdType {
-  instanceId: string
+  instanceId: string;
 }
 
 export interface InstanceInfoType {

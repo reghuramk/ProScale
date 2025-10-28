@@ -14,7 +14,9 @@ const credentials = {
 };
 
 export const ec2Client = new EC2Client({ credentials, region: REGION });
-export const cloudwatchClient = new CloudWatchClient({ credentials, region: REGION });
+export const cloudwatchClient = new CloudWatchClient({
+  credentials,
+  region: REGION,
+});
 
 console.log(`✅ AWS Clients initialized for region: ${REGION}`);
-

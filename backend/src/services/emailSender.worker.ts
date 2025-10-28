@@ -22,7 +22,10 @@ async function run() {
         console.error("Received message with null value");
         return;
       }
-      interface EmailVerificationPayload { email: string; token: string };
+      interface EmailVerificationPayload {
+        email: string;
+        token: string;
+      }
       const { email, token } = JSON.parse(
         message.value.toString(),
       ) as EmailVerificationPayload;
