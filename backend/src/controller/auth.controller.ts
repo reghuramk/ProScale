@@ -2,12 +2,12 @@ import { NextFunction, Request, Response } from "express";
 
 // import db from "../db/pg";
 import * as Authservice from "../services/auth.service";
+import { Constants } from "../utils/constants";
 import {
   // GoogleSigninResponseType,
   RegisterResponseType,
   UserType,
-} from "../services/types";
-import { Constants } from "../utils/constants";
+} from "../utils/types";
 
 const { MESSAGES, TOKENS } = Constants;
 

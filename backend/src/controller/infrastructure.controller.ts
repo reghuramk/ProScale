@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
 import * as InfrastructureService from "../services/infrastructure.service";
-import { InstanceIdType, InstanceInfoType } from "../services/types";
 import { Constants } from "../utils/constants";
+import { InstanceIdType, InstanceInfoType } from "../utils/types";
 
 const { MESSAGES } = Constants;
 

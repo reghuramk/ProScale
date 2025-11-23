@@ -9,7 +9,7 @@ import {
   GoogleSigninResponseType,
   RegisterResponseType,
   UserType,
-} from "./types";
+} from "../utils/types";
 
 const { MESSAGES, TOKENS } = Constants;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;

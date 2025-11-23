@@ -1,4 +1,5 @@
 import { authGuard } from "./auth.middleware";
-import * as Middleware from "./error.middleware";
+import { errorHandler, notFoundHandler } from "./error.middleware";
+import { loggerMiddleware } from "./logger.middleware";
 
-export { authGuard, Middleware };
+export { authGuard, errorHandler, loggerMiddleware, notFoundHandler };

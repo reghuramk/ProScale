@@ -15,10 +15,25 @@ export interface InstanceInfoType {
   type?: string;
 }
 
+export interface options {
+  colorize: boolean;
+  translateTime: string;
+}
+
+export interface PinoOptionsType {
+  level: string;
+  transport?: transportType;
+}
+
 export interface RegisterResponseType {
   accessToken: string;
   refreshToken: string;
   user: UserType;
+}
+
+export interface transportType {
+  options?: options;
+  target: string;
 }
 
 export interface UserType {

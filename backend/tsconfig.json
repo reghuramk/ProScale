@@ -11,12 +11,12 @@
     "strict": true,
     "noUncheckedIndexedAccess": true,
     /* If NOT transpiling with TypeScript: */
-    "moduleResolution": "node",
-    "module": "commonjs",
+    "moduleResolution": "node16",
+    "module": "node16",
     "noEmit": true,
     /* If your code doesn't run in the DOM: */
     "lib": ["ESNext"],
     "sourceMap": true,
-    "ignoreDeprecations": "6.0"
+    "ignoreDeprecations": "5.0"
   }
 }

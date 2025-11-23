@@ -5,7 +5,7 @@ import {
 } from "@aws-sdk/client-ec2";
 
 import { ec2Client } from "../config/awsClient";
-import { InstanceInfoType } from "./types";
+import { InstanceInfoType } from "../utils/types";
 
 export async function listInstances() {
   const response = await ec2Client.send(new DescribeInstancesCommand({}));
