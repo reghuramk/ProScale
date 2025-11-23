@@ -1,4 +1,4 @@
-import "./otel";
+import "./utils/otel";
 import app from "./app";
 
 const PORT = process.env.PORT ?? "3004";
