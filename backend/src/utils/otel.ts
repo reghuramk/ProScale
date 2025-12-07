@@ -7,7 +7,9 @@ import { BatchLogRecordProcessor } from "@opentelemetry/sdk-logs";
 import { PeriodicExportingMetricReader } from "@opentelemetry/sdk-metrics";
 import { NodeSDK } from "@opentelemetry/sdk-node";
 
-const traceExporter = new OTLPTraceExporter();
+const traceExporter = new OTLPTraceExporter({
+  url: process.env.OTEL_EXPORTER_OTLP_ENDPOINT,
+});
 const metricExporter = new OTLPMetricExporter();
 const metricReader = new PeriodicExportingMetricReader({
   exporter: metricExporter,
@@ -20,7 +22,7 @@ const sdk = new NodeSDK({
   instrumentations: [getNodeAutoInstrumentations(), new PinoInstrumentation()],
   logRecordProcessors,
   metricReader,
-  serviceName: "pro-scale-service",
+  serviceName: process.env.OTEL_SERVICE_NAME,
   traceExporter,
 });
 

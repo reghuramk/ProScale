@@ -41,4 +41,24 @@ services:
       - loki
       - tempo
   
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+  
+  my-node-app:
+    build: .
+    container_name: pro-scale-service
+    ports:
+      - "3004:3004"              
+    environment:
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+      - OTEL_SERVICE_NAME=pro-scale-service
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - otel-collector
+      - redis
+  
   

@@ -1,7 +1,7 @@
 export const Constants = {
   ENVIRONMENT: {
-    DEVELOPMENT: "DEVELOPMENT",
-    PRODUCTION: "PRODUCTION",
+    DEVELOPMENT: "development",
+    PRODUCTION: "production",
   },
   FEMALE: "female",
   MALE: "male",

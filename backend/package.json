@@ -11,6 +11,8 @@
     "dev:node": "node --trace-deprecation --watch --env-file=.env dist/index.js | pino-pretty",
     "dev:tsc": "tsc --watch",
     "dev:esbuild": "eslint . && esbuild --watch src/index.ts --bundle --platform=node --sourcemap --outdir=dist",
+    "docker:dev": "docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build",
+    "docker:prod": "docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d",
     "prepare": "husky",
     "lint": "eslint ."
   },

@@ -1,0 +1,6 @@
+services:
+  my-node-app:
+    env_file:
+      - .env.production
+    environment:
+      - NODE_ENV=production
