@@ -56,6 +56,7 @@ services:
     environment:
       - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
       - OTEL_SERVICE_NAME=pro-scale-service
+      - OTEL_LOGS_EXPORTER=otlp
       - REDIS_URL=redis://redis:6379
     depends_on:
       - otel-collector

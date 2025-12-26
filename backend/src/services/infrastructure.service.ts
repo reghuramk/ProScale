@@ -5,22 +5,34 @@ import {
 } from "@aws-sdk/client-ec2";
 
 import { ec2Client } from "../config/awsClient";
+import { logger } from "../utils/logger";
 import { InstanceInfoType } from "../utils/types";
 
 export async function listInstances() {
-  const response = await ec2Client.send(new DescribeInstancesCommand({}));
+  try {
+    const response = await ec2Client.send(new DescribeInstancesCommand({}));
 
-  const instances: InstanceInfoType[] =
-    response.Reservations?.flatMap((res) =>
-      (res.Instances ?? []).map((i) => ({
-        id: i.InstanceId ?? "",
-        launchTime: i.LaunchTime,
-        state: i.State?.Name,
-        type: i.InstanceType,
-      })),
-    ) ?? [];
+    const instances: InstanceInfoType[] =
+      response.Reservations?.flatMap((res) =>
+        (res.Instances ?? []).map((i) => ({
+          id: i.InstanceId ?? "",
+          launchTime: i.LaunchTime,
+          state: i.State?.Name,
+          type: i.InstanceType,
+        })),
+      ) ?? [];
 
-  return instances;
+    return instances;
+  } catch (error) {
+    logger.error(
+      {
+        error,
+        operation: "listInstances",
+        service: "EC2",
+      },
+      "Failed to list EC2 instances",
+    );
+  }
 }
 
 export async function startInstance(instanceId: string) {

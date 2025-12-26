@@ -8,6 +8,18 @@ services:
     command: npm run dev
     environment:
       - NODE_ENV=development
-    volumes:
-      - .:/app
-      - /app/node_modules
+    # volumes:
+    #   - .:/app
+    #   - /app/node_modules
+    develop:
+      watch:
+        # A. Sync Code: If I change src, push it to /app/src
+        - action: sync
+          path: ./src
+          target: /app/src
+          ignore:
+            - node_modules/
+
+        # B. Rebuild: If I change package.json, rebuild the image automatically
+        - action: rebuild
+          path: ./package.json

@@ -1,6 +1,7 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 
 import { Constants } from "../utils/constants";
+import { logger } from "../utils/logger";
 
 const { ENVIRONMENT, MESSAGES } = Constants;
 
@@ -11,6 +12,7 @@ export const notFoundHandler = (
 ) => {
   const error = new Error(MESSAGES.ROUTE_NOT_FOUND);
   res.status(404);
+  logger.error("URL Not Found");
   next(error);
 };
 

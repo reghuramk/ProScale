@@ -13,7 +13,7 @@ export const listInstances = async (
 ): Promise<Response | undefined> => {
   try {
     const instances: InstanceInfoType[] =
-      await InfrastructureService.listInstances();
+      (await InfrastructureService.listInstances()) ?? [];
     return res.status(200).json({
       instances: instances,
       message: MESSAGES.INSTANCE_LIST_FETCHED,
@@ -65,7 +65,7 @@ export async function scaleUp() {
 }
 
 export async function toggleInstanceState() {
-  const instances = await InfrastructureService.listInstances();
+  const instances = (await InfrastructureService.listInstances()) ?? [];
   const target = instances[0];
 
   if (!target) {

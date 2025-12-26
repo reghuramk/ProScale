@@ -16,20 +16,22 @@ export interface InstanceInfoType {
 }
 
 export interface options {
-  colorize: boolean;
-  translateTime: string;
+  colorize?: boolean;
+  resourceAttributes: resourceAttribute;
+  translateTime?: string;
 }
 
 export interface PinoOptionsType {
   level: string;
   transport?: transportType;
 }
-
 export interface RegisterResponseType {
   accessToken: string;
   refreshToken: string;
   user: UserType;
 }
+
+export type resourceAttribute = Record<string, string>;
 
 export interface transportType {
   options?: options;

@@ -21,7 +21,8 @@ app.use(ROUTES.AUTH.BASE, authRoutes);
 app.use(ROUTES.INFRA.BASE, infrastructureRoutes);
 
 app.get("/home", (req: Request, res: Response) => {
-  res.send("Welcome home");
+  logger.info("Home route accessed! Sending welcome message...");
+  res.send("Welcome");
 });
 
 app.use(notFoundHandler);
