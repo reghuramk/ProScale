@@ -1,0 +1,12 @@
+services:
+  backend:
+    env_file:
+      - ./backend/.env.production
+    environment:
+      - NODE_ENV=production
+    restart: always
+
+  ml-service:
+    env_file:
+      - ./ml-service/.env.production
+    restart: always

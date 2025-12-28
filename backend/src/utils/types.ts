@@ -25,6 +25,15 @@ export interface PinoOptionsType {
   level: string;
   transport?: transportType;
 }
+
+export interface PrometheusResponse {
+  data?: {
+    result?: {
+      value?: [number, string];
+    }[];
+  };
+}
+
 export interface RegisterResponseType {
   accessToken: string;
   refreshToken: string;

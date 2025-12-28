@@ -1,0 +1,31 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      target: builder             # uses the builder stage from backend Dockerfile
+    env_file:
+      - ./backend/.env.development
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+    develop:
+      watch:
+        # Sync backend source into container
+        - action: sync
+          path: ./backend/src      # NOTE: from root now
+          target: /app/src
+          ignore:
+            - node_modules/
+
+        # Rebuild image if deps change
+        - action: rebuild
+          path: ./backend/package.json
+
+  ml-service:
+    build:
+      context: ./ml-service
+    env_file:
+      - ./ml-service/.env.development
+    command: uvicorn app:app --host 0.0.0.0 --port 8000 --reload
+    volumes:
+      - ./ml-service:/app
