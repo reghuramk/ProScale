@@ -5,6 +5,7 @@ import pinoHttp from "pino-http";
 import { errorHandler, notFoundHandler } from "./middleware";
 import { loggerMiddleware } from "./middleware/logger.middleware";
 import { authRoutes, infrastructureRoutes } from "./routes";
+import { register } from "./services/metrics.service";
 import { Constants } from "./utils/constants";
 import { logger } from "./utils/logger";
 
@@ -23,6 +24,11 @@ app.use(ROUTES.INFRA.BASE, infrastructureRoutes);
 app.get("/home", (req: Request, res: Response) => {
   logger.info("Home route accessed! Sending welcome message...");
   res.send("Welcome");
+});
+
+app.get("/metrics", async (_req, res) => {
+  res.set("Content-Type", register.contentType);
+  res.end(await register.metrics());
 });
 
 app.use(notFoundHandler);

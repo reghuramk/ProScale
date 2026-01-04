@@ -6,7 +6,7 @@ import {
 
 import { ec2Client } from "../config/awsClient";
 import { logger } from "../utils/logger";
-import { InstanceInfoType } from "../utils/types";
+import { InstanceInfoType, TagsType } from "../utils/types";
 
 export async function listInstances() {
   try {
@@ -18,12 +18,17 @@ export async function listInstances() {
           id: i.InstanceId ?? "",
           launchTime: i.LaunchTime,
           state: i.State?.Name,
+          tags: i.Tags?.map((t) => ({
+            Key: t.Key,
+            Value: t.Value,
+          })) as TagsType,
           type: i.InstanceType,
         })),
       ) ?? [];
 
     return instances;
   } catch (error) {
+    console.log("Failed to list EC2 instances", error);
     logger.error(
       {
         error,

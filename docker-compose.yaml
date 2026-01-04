@@ -50,7 +50,15 @@ services:
     ports:
       - "6379:6379"
 
+  # ---------- ML Service (Python) ----------
+  ml-service:
+    build: ./ml-service
+    container_name: proscale-ml
+    ports:
+      - "8000:8000"
+    
   # ---------- Backend (Node) ----------
+
   backend:
     build: ./backend
     container_name: proscale-backend
@@ -61,13 +69,10 @@ services:
       - OTEL_SERVICE_NAME=pro-scale-service
       - OTEL_LOGS_EXPORTER=otlp
       - REDIS_URL=redis://redis:6379
+      - PROM_URL=http://prometheus:9090/api/v1/query
+      - ML_URL=http://ml-service:8000/predict
     depends_on:
       - redis
       - otel-collector
-
-  # ---------- ML Service (Python) ----------
-  ml-service:
-    build: ./ml-service
-    container_name: proscale-ml
-    ports:
-      - "8000:8000"
+      - prometheus
+      - ml-service

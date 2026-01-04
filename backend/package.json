@@ -16,6 +16,7 @@
     "docker:prod": "docker compose -f docker-compose.yaml -f docker-compose.prod.yaml up -d",
     "local": "npm-run-all --parallel local:node dev:tsc dev:esbuild",
     "local:node": "node --trace-deprecation --watch --env-file=.env.development dist/index.js | pino-pretty",
+    "test:cloudwatch": "ts-node src/scripts/testCloudwatch.ts",
     "prepare": "husky",
     "lint": "eslint ."
   },
@@ -78,6 +79,7 @@
     "pg": "^8.16.3",
     "pino-http": "^11.0.0",
     "pino-opentelemetry-transport": "^1.1.0",
+    "prom-client": "^15.1.3",
     "zod": "^4.0.5"
   }
 }

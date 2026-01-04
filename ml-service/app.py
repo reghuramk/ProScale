@@ -7,11 +7,17 @@ class Metrics(BaseModel):
     cpu_usage: float
     request_count: int
 
-@app.post("/predict")
-def predict(data: Metrics):
-    # 🔥 Dummy prediction logic (replace with model later)
-    predicted_cpu = data.cpu_usage * 1.15  # +15% expected next minute
-    
+class PredictionResponse(BaseModel):
+    predicted_cpu: float
+    action: str
+    recommended_instances: int
+
+@app.post("/predict", response_model=PredictionResponse)
+async def predict(metrics: Metrics):
+    cpu = metrics.cpu_usage
+    req = metrics.request_count
+
+    predicted_cpu = cpu * 1.15  # dummy logic
     action = "none"
     recommended = 1
 
@@ -22,8 +28,8 @@ def predict(data: Metrics):
         action = "scale_down"
         recommended = 0
 
-    return {
-        "predicted_cpu": predicted_cpu,
-        "action": action,
-        "recommended_instances": recommended
-    }
+    return PredictionResponse(
+        predicted_cpu=predicted_cpu,
+        action=action,
+        recommended_instances=recommended,
+    )
