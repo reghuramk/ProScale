@@ -1,9 +1,11 @@
 import { reconcileDesiredCapacity } from "../services/autoScalerService";
-import { getFleetLatestCpuAverage } from "../services/cloudwatch.service";
+import { getFleetLatestCpuSummary } from "../services/cloudwatch.service";
 import * as InfrastructureService from "../services/infrastructure.service";
 import {
   desiredInstancesGauge,
   ec2CpuGauge,
+  fleetAvgCpuGauge,
+  fleetP95CpuGauge,
   runningInstancesGauge,
   tickDurationMs,
   ticksTotal,
@@ -15,6 +17,7 @@ import { TagsType } from "../utils/types";
 const TICK_MS = Number(process.env.SCALER_TICK_MS ?? "60000");
 const MANAGED_TAG_KEY = process.env.MANAGED_TAG_KEY ?? "ProScale";
 const MANAGED_TAG_VALUE = process.env.MANAGED_TAG_VALUE ?? "true";
+const CPU_SIGNAL = (process.env.CPU_SIGNAL ?? "p95").toLowerCase(); // "avg" | "p95"
 
 const SCALER_MODE = process.env.SCALER_MODE ?? "ml";
 const CPU_SCALE_UP_THRESHOLD = Number(
@@ -81,18 +84,21 @@ export function startScalingLoop(): void {
       } else {
         const runningIds = running.map((i) => i.id);
 
-        const { fleetAvg, perInstance } = await getFleetLatestCpuAverage(
-          runningIds,
-          10,
-          300,
-        );
+        const { fleetAvg, p95Cpu, perInstance } =
+          await getFleetLatestCpuSummary(runningIds, 10, 300);
 
-        cpu = fleetAvg;
+        fleetAvgCpuGauge.set(fleetAvg);
+        fleetP95CpuGauge.set(p95Cpu);
+
+        cpu = CPU_SIGNAL === "avg" ? fleetAvg : p95Cpu; // default p95
         ec2CpuGauge.set(cpu);
 
         logger.info(
           {
-            fleetAvgCpu: cpu,
+            cpuSignal: CPU_SIGNAL,
+            fleetAvgCpu: fleetAvg,
+            fleetCpuUsedForDecision: cpu,
+            fleetP95Cpu: p95Cpu,
             perInstanceCpu: perInstance,
             running: running.length,
             runningIds,

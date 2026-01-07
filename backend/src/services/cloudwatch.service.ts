@@ -99,15 +99,19 @@ export async function getEc2LatestCpuAverage(
   }
 }
 
-export async function getFleetLatestCpuAverage(
+export async function getFleetLatestCpuSummary(
   instanceIds: string[],
   minutesBack = 10,
   periodSec = 300,
-): Promise<{ fleetAvg: number; perInstance: Record<string, number> }> {
+): Promise<{
+  fleetAvg: number;
+  p95Cpu: number;
+  perInstance: Record<string, number>;
+}> {
   const perInstance: Record<string, number> = {};
 
   if (!instanceIds.length) {
-    return { fleetAvg: 0, perInstance };
+    return { fleetAvg: 0, p95Cpu: 0, perInstance };
   }
 
   const cpus = await Promise.all(
@@ -119,6 +123,14 @@ export async function getFleetLatestCpuAverage(
   );
 
   const fleetAvg = cpus.reduce((sum, v) => sum + v, 0) / cpus.length;
+  const p95Cpu = percentile(cpus, 95);
 
-  return { fleetAvg, perInstance };
+  return { fleetAvg, p95Cpu, perInstance };
+}
+
+function percentile(values: number[], p: number): number {
+  if (!values.length) return 0;
+  const sorted = [...values].sort((a, b) => a - b);
+  const idx = Math.ceil((p / 100) * sorted.length) - 1;
+  return sorted[Math.max(0, Math.min(idx, sorted.length - 1))] ?? 0;
 }

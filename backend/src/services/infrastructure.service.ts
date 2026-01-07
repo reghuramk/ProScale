@@ -10,6 +10,7 @@ import { InstanceInfoType, TagsType } from "../utils/types";
 
 export async function listInstances() {
   try {
+    logger.info("Instances are being listed");
     const response = await ec2Client.send(new DescribeInstancesCommand({}));
 
     const instances: InstanceInfoType[] =

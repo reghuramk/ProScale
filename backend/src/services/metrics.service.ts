@@ -30,6 +30,16 @@ export const scaleActionsTotal = new client.Counter({
   // result: "success" | "error"
 });
 
+export const fleetAvgCpuGauge = new client.Gauge({
+  help: "Average CPU utilization across running managed EC2 instances",
+  name: "proscale_fleet_cpu_avg",
+});
+
+export const fleetP95CpuGauge = new client.Gauge({
+  help: "p95 CPU utilization across running managed EC2 instances",
+  name: "proscale_fleet_cpu_p95",
+});
+
 export const tickDurationMs = new client.Histogram({
   buckets: [50, 100, 250, 500, 1000, 2000, 5000, 10000],
   help: "Duration of autoscaler tick in milliseconds",
