@@ -1,5 +1,9 @@
 fastapi
-uvicorn
+uvicorn[standard]
 pydantic
 numpy
+pandas
 scikit-learn
+joblib
+boto3
+python-dotenv

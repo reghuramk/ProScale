@@ -7,6 +7,7 @@
     "debug": "npm run start",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "eslint . && esbuild src/index.ts --bundle --platform=node --packages=external --sourcemap --outdir=dist",
+    "export:fleet:cpu:dev": "ts-node src/scripts/exportFleetCpuDataset.ts",
     "start": "node --trace-deprecation dist/index.js",
     "dev:node": "node --trace-deprecation --watch dist/index.js | pino-pretty",
     "dev:tsc": "tsc --watch",

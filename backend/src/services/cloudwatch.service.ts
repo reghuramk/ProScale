@@ -62,6 +62,40 @@ export async function getEc2CpuHistory(
   }
 }
 
+export async function getEc2CpuHistoryRange(
+  instanceId: string,
+  startTime: Date,
+  endTime: Date,
+  periodSec = 300,
+): Promise<CpuDatapoint[]> {
+  const cmd = new GetMetricStatisticsCommand({
+    Dimensions: [{ Name: "InstanceId", Value: instanceId }],
+    EndTime: endTime,
+    MetricName: "CPUUtilization",
+    Namespace: "AWS/EC2",
+    Period: periodSec,
+    StartTime: startTime,
+    Statistics: ["Average"],
+    Unit: "Percent",
+  });
+
+  logger.info(
+    { endTime, instanceId, periodSec, startTime },
+    "📡 Fetching EC2 CPUUtilization (range)",
+  );
+
+  const resp = await cloudwatchClient.send(cmd);
+
+  const datapoints: CpuDatapoint[] =
+    resp.Datapoints?.map((dp) => ({
+      average: dp.Average ?? 0,
+      timestamp: dp.Timestamp ?? new Date(),
+    })) ?? [];
+
+  datapoints.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+  return datapoints;
+}
+
 export async function getEc2LatestCpuAverage(
   instanceId: string,
   minutesBack = 5,
@@ -99,6 +133,61 @@ export async function getEc2LatestCpuAverage(
   }
 }
 
+export async function getFleetCpuSeries(
+  instanceIds: string[],
+  minutesBack = 60, // 12 points * 5min = 60 min
+  periodSec = 300, // 5 min
+  signal: "avg" | "p95" = "p95",
+): Promise<number[]> {
+  // fetch per-instance history
+  const perInstance = await Promise.all(
+    instanceIds.map(async (id) => ({
+      id,
+      points: await getEc2CpuHistory(id, minutesBack, periodSec),
+    })),
+  );
+
+  // convert into aligned arrays (take same last K points per instance)
+  const arrays = perInstance
+    .map((x) => x.points.map((p) => p.average))
+    .filter((arr) => arr.length > 0);
+
+  if (!arrays.length) return [];
+
+  // pick K = min length among instances
+  const K = Math.min(...arrays.map((a) => a.length));
+
+  const trimmed = arrays.map((a) => a.slice(a.length - K)); // last K
+
+  // compute fleet metric per time index
+  const series: number[] = [];
+  for (let i = 0; i < K; i++) {
+    const vals: (number | undefined)[] = trimmed
+      .map((a) => a[i])
+      .sort(
+        (a: number | undefined, b: number | undefined) => (a ?? 0) - (b ?? 0),
+      );
+    if (signal === "avg") {
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+      const avg =
+        vals.length > 0
+          ? (vals.reduce(
+              (s: number | undefined, v: number | undefined) =>
+                (s ?? 0) + (v ?? 0),
+              0,
+            ) ?? 0) / vals.length
+          : 0;
+      series.push(avg);
+    } else {
+      // p95
+      const idx = Math.floor(0.95 * (vals.length - 1));
+      series.push(vals[idx] ?? 0);
+    }
+  }
+
+  return series;
+}
+
 export async function getFleetLatestCpuSummary(
   instanceIds: string[],
   minutesBack = 10,
@@ -127,6 +216,11 @@ export async function getFleetLatestCpuSummary(
 
   return { fleetAvg, p95Cpu, perInstance };
 }
+
+// function mean(values: number[]): number {
+//   if (!values.length) return 0;
+//   return values.reduce((s, v) => s + v, 0) / values.length;
+// }
 
 function percentile(values: number[], p: number): number {
   if (!values.length) return 0;

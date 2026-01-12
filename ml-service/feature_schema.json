@@ -1,0 +1,40 @@
+{
+  "feature_cols": [
+    "cpu",
+    "hour_sin",
+    "hour_cos",
+    "dow_sin",
+    "dow_cos",
+    "slope_3",
+    "slope_6",
+    "lag_1",
+    "lag_2",
+    "lag_3",
+    "lag_4",
+    "lag_5",
+    "lag_6",
+    "lag_7",
+    "lag_8",
+    "lag_9",
+    "lag_10",
+    "lag_11",
+    "lag_12",
+    "roll_mean_3",
+    "roll_std_3",
+    "roll_mean_6",
+    "roll_std_6",
+    "roll_mean_12",
+    "roll_std_12"
+  ],
+  "period_sec": 300,
+  "horizon_steps": 1,
+  "lag_steps": 12,
+  "roll_windows": [
+    3,
+    6,
+    12
+  ],
+  "trained_at_utc": "2026-01-12T16:10:30.762155+00:00",
+  "rmse": 0.04582510459275704,
+  "mae": 0.029751327218210926
+}

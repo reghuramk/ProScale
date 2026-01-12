@@ -1,0 +1,33 @@
+{
+  "period_sec": 300,
+  "horizon_minutes": 5,
+  "feature_cols": [
+    "fleet_avg",
+    "fleet_p95",
+    "sample_count",
+    "avg_lag_1",
+    "p95_lag_1",
+    "avg_lag_2",
+    "p95_lag_2",
+    "avg_lag_3",
+    "p95_lag_3",
+    "avg_lag_4",
+    "p95_lag_4",
+    "avg_lag_5",
+    "p95_lag_5",
+    "avg_lag_6",
+    "p95_lag_6",
+    "avg_roll_mean_30m",
+    "avg_roll_std_30m",
+    "p95_roll_mean_30m",
+    "p95_roll_std_30m",
+    "avg_roll_mean_60m",
+    "p95_roll_mean_60m",
+    "avg_slope_30m",
+    "p95_slope_30m",
+    "hour",
+    "dow"
+  ],
+  "mae": 0.03760164373708599,
+  "rmse": 0.12329329747089679
+}
